@@ -1,4 +1,4 @@
-ARG BUILD_FROM=dfjkgnfdkjgn
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base-image:latest
 FROM $BUILD_FROM
 
 MAINTAINER ex-ml <ex_ml@sent.com>
