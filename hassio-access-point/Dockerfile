@@ -1,5 +1,5 @@
-ARG BUILD_FROM
-FROM BUILD_FROM
+ARG BUILD_FROM=dfjkgnfdkjgn
+FROM $BUILD_FROM
 
 MAINTAINER ex-ml <ex_ml@sent.com>
 
