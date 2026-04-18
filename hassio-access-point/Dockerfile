@@ -1,5 +1,4 @@
-ARG BUILD_FROM
-ARG BUILD_VERSION
+ARG BUILD_FROM="alpine"
 FROM ${BUILD_FROM}
 
 MAINTAINER ex-ml <ex_ml@sent.com>
