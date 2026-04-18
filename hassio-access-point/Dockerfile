@@ -11,18 +11,14 @@ LABEL \
     io.hass.version=${BUILD_VERSION} \
     maintainer="ex_ml@sent.com"
 
-# Install required packages
-RUN apk add --no-cache \
-    hostapd \
-    dnsmasq \
-    iptables \
-    iw \
-    bash
+RUN apk update && \
+apk add --no-cache bash iw hostapd networkmanager networkmanager-cli net-tools sudo dnsmasq iptables && \
+rm -rf /var/cache/apk/*
 
-# Copy root filesystem
-COPY rootfs/ /
+COPY hostapd.conf /
+COPY dnsmasq.conf /
 
-# Ensure scripts are executable
-RUN chmod a+x /etc/services.d/*/run
+COPY run.sh /
+RUN chmod a+x /run.sh
 
-# Default command handled by s6 (Home Assistant base image)
+CMD [ "/run.sh" ]
