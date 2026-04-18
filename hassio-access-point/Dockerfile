@@ -1,19 +1,28 @@
-ARG BUILD_FROM="alpine"
+ARG BUILD_FROM=ghcr.io/home-assistant/base:latest
+ARG BUILD_VERSION=0.5.4
+
 FROM ${BUILD_FROM}
 
-MAINTAINER ex-ml <ex_ml@sent.com>
+# Labels (ersetzen MAINTAINER)
+LABEL \
+    io.hass.name="Hassio Access Point" \
+    io.hass.description="Create a WiFi access point using hostapd" \
+    io.hass.type="addon" \
+    io.hass.version=${BUILD_VERSION} \
+    maintainer="ex_ml@sent.com"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Install required packages
+RUN apk add --no-cache \
+    hostapd \
+    dnsmasq \
+    iptables \
+    iw \
+    bash
 
-ENV LANG C.UTF-8
+# Copy root filesystem
+COPY rootfs/ /
 
-RUN apk add bash iw hostapd networkmanager networkmanager-cli net-tools sudo dnsmasq iptables
+# Ensure scripts are executable
+RUN chmod a+x /etc/services.d/*/run
 
-
-COPY hostapd.conf /
-COPY dnsmasq.conf /
-
-COPY run.sh /
-RUN chmod a+x /run.sh
-
-CMD [ "/run.sh" ]
+# Default command handled by s6 (Home Assistant base image)
